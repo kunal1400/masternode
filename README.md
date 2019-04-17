@@ -1,0 +1,2 @@
+# masternode
+Plugin for Ondrej
