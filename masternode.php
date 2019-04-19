@@ -71,10 +71,49 @@ function mno_callback( $atts ) {
 		$output = "Coin name is required";
 	}
 	
-	// ob_start();
-	// //return "foo = {$a['foo']}";
-	
-	// $output = ob_get_clean();
+	// // Daily income usd
+	if( isset($a['get']) &&  $a['get'] == 'daily_income_usd' ) {
+		return '<div id="masterNodeWrapper">
+			<table>
+				<thead>
+					<tr>
+						<th>'.$a['coin_ticker'].' - Daily Income USD</th>
+						<th>Input</th>
+						<th>Action</th>
+						<th>Output</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>'.$output.'</td>
+						<td><input type="number" id="masterNodeNumberInput" /></td>
+						<td><button onclick="doCalculations()" id="masterNodeNumberButton">Submit</button></td>
+						<td>
+							<input type="number" disabled="disabled" id="masterNodeOutput1" />
+							<input type="number" disabled="disabled" id="masterNodeOutput2" />
+						</td>
+					</tr>
+				</tbody>				
+			</table>
+		</div>
+		<script>
+			function doCalculations() {
+				var _input = document.getElementById("masterNodeNumberInput").value;
+				var _coinVal = '.$output.';
+				if(_input) {
+					var formula1 = _input * _coinVal * 30 * 0.01;
+					var formula2 = (_input - _coinVal * 30) - 9.9;
+					document.getElementById("masterNodeOutput1").value = formula1.toFixed(1)
+					document.getElementById("masterNodeOutput2").value = formula2.toFixed(1)
+					//alert(calculation)
+				}
+				else {
+					alert("Input is empty")					
+				}
+			}
+		</script>';
+	}	
+
 	return $output;
 }
 
