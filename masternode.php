@@ -109,42 +109,8 @@ function mno_callback( $atts ) {
 		$output = round($output, 1);		
 	}
 	else if( $a['formula'] == 7 ) {
-		$output = '<div id="masterNodeWrapper">
-			<table>
-				<thead>
-					<tr>
-						<th>'.$a['coin_ticker']. $a['get'] .'</th>
-						<th>Input</th>
-						<th>Action</th>
-						<th>Output</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>'.$coinValue.'</td>
-						<td><input type="number" id="masterNodeNumberInput" /></td>
-						<td><button onclick="doCalculations()" id="masterNodeNumberButton">Submit</button></td>
-						<td>
-							<input type="number" disabled="disabled" id="masterNodeOutput1" />
-							<input type="number" disabled="disabled" id="masterNodeOutput2" />
-						</td>
-					</tr>
-				</tbody>				
-			</table>
-		</div>
-		<script>
-			function doCalculations() {
-				var _input = document.getElementById("masterNodeNumberInput").value;
-				var _coinVal = '.$coinValue.';
-				if(_input) {
-					var formula2 = (_input - _coinVal * 30) - 9.9;
-					document.getElementById("masterNodeOutput2").value = formula2.toFixed(1)
-				}
-				else {
-					alert("Input is empty")					
-				}
-			}
-		</script>';
+		$output = ($coinValue*30)-29.99;
+		$output = round($output, 1);
 	}	
 	else if( $a['formula'] == 8 ) {
 		$output = '<div id="masterNodeWrapper">
@@ -163,7 +129,6 @@ function mno_callback( $atts ) {
 						<td><input type="number" id="masterNodeNumberInput" /></td>
 						<td><button onclick="doCalculations()" id="masterNodeNumberButton">Submit</button></td>
 						<td>
-							<input type="number" disabled="disabled" id="masterNodeOutput1" />
 							<input type="number" disabled="disabled" id="masterNodeOutput2" />
 						</td>
 					</tr>
