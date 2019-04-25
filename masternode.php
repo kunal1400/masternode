@@ -113,51 +113,52 @@ function mno_callback( $atts ) {
 		$output = round($output, 1);
 	}	
 	else if( $a['formula'] == 8 ) {
-		$output = '<div id="masterNodeWrapper">
-			<table>
-				<thead>
-					<tr>
-						<th>'.$a['coin_ticker']. $a['get'] .'</th>
-						<th>Input</th>
-						<th>Action</th>
-						<th>Output</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>'.$coinValue.'</td>
-						<td><input type="number" id="masterNodeNumberInput" /></td>
-						<td><button onclick="doCalculations()" id="masterNodeNumberButton">Submit</button></td>
-						<td>
-							<input type="number" disabled="disabled" id="masterNodeOutput2" />
-						</td>
-					</tr>
-				</tbody>				
-			</table>
-		</div>
-		<script>
-			function doCalculations() {
-				var _input = document.getElementById("masterNodeNumberInput").value;
-				var _coinVal = '.$coinValue.';
-				if(_input) {
-					var formula2 = _input*_coinVal*30*0.01;
-					document.getElementById("masterNodeOutput2").value = formula2.toFixed(1)
-				}
-				else {
-					alert("Input is empty")					
-				}
-			}
-		</script>';
+		$output = round($coinValue, 1);
+		$output .= '<script>
+					function doCalculations() {
+						var _input = document.getElementById("masterNodeNumberInput").value;
+						var _coinVal = '.$coinValue.';
+						if(_input) {
+							var formula2 = _input*_coinVal*30*0.01;
+							document.getElementById("masterNodeOutput2").innerHTML = formula2.toFixed(1)
+						}
+						else {
+							document.getElementById("masterNodeOutput2").innerHTML = "";
+						}
+					}
+				</script>';
 	}
 	else {
 		$output = $coinValue;
 	}
-
-	// // // Daily income usd
-	// if( isset($a['get']) &&  $a['formula'] == 2 ) {
-	// 	return 	}
-
+	
 	return $output;
 }
 
 add_shortcode( 'mno', 'mno_callback' );
+
+/**
+ * Shortcode for generating the input for formula8
+ */
+add_shortcode( 'formula8_input', 'mno_formula8_input_callback' );
+function mno_formula8_input_callback( $atts ) {
+	// Get shortcodes
+	$a = shortcode_atts( array(
+		"class" => "",
+	), $atts );
+
+	return '<input class="'.$a['class'].'" onkeyup="doCalculations()" type="number" id="masterNodeNumberInput" />';
+}
+
+/**
+ * Shortcode for generating the output for formula8
+ */
+add_shortcode( 'formula8_output', 'mno_formula8_output_callback' );
+function mno_formula8_output_callback( $atts ) {
+	// Get shortcodes
+	$a = shortcode_atts( array(
+		"class" => "",
+	), $atts );
+
+	return '<div class="'.$a['class'].'" id="masterNodeOutput2"></div>';
+}
