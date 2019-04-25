@@ -11,16 +11,16 @@ Plugin for Ondrej
 7) (z*30)-29.99;
 8) y * pivx daily_income_usd * 30 * 0.01;
 
-#shortcodes
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=1]
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=2]
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=3]
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=4]
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=5]
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=6]
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=7]
-[mno coin_ticker="PIVX" get="daily_income_usd" formula=8]
+# shortcodes
+1) [mno coin_ticker="PIVX" get="daily_income_usd" formula=1]
+2) [mno coin_ticker="PIVX" get="daily_income_usd" formula=2]
+3) [mno coin_ticker="PIVX" get="daily_income_usd" formula=3]
+4) [mno coin_ticker="PIVX" get="daily_income_usd" formula=4]
+5) [mno coin_ticker="PIVX" get="daily_income_usd" formula=5]
+6) [mno coin_ticker="PIVX" get="daily_income_usd" formula=6]
+7) [mno coin_ticker="PIVX" get="daily_income_usd" formula=7]
+8) [mno coin_ticker="PIVX" get="daily_income_usd" formula=8]
 
-#shorcodes for formula8
-[formula8_input class="123"]
-[formula8_output class="456"]
+# shorcodes for formula8
+1) [formula8_input class="123"]
+2) [formula8_output class="456"]
