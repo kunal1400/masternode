@@ -160,5 +160,5 @@ function mno_formula8_output_callback( $atts ) {
 		"class" => "",
 	), $atts );
 
-	return '<div class="'.$a['class'].'" id="masterNodeOutput2"></div>';
+	return '<span class="'.$a['class'].'" id="masterNodeOutput2"></span>';
 }
