@@ -42,7 +42,8 @@ function mno_callback( $atts ) {
 	$a = shortcode_atts( array(
 		"coin_ticker" => "",
 		"get" => "",
-		"formula" => 1
+		"formula" => 1,
+		"class" => ""
 	), $atts );
 	
 	$output = "";
@@ -54,8 +55,24 @@ function mno_callback( $atts ) {
 	}
 
 	if( !empty($a['coin_ticker']) ) {
+
+		$args = array(
+			'timeout'     => 15,
+			'redirection' => 15,
+			'httpversion' => '1.0',
+			'blocking'    => true,
+			'headers'     => array(),
+			'cookies'     => array(),
+			'body'        => null,
+			'compress'    => false,
+			'decompress'  => true,
+			'sslverify'   => true,
+			'stream'      => false,
+			'filename'    => null
+		); 
+
 		// Response 
-		$response = wp_remote_get( "https://masternodes.online/mno_api/?apiseed=MNOAPI-0063-ac44ae4a-5c47ac12-50a3-5cfc6053" );				
+		$response = wp_remote_get("https://masternodes.online/mno_api/?apiseed=MNOAPI-0063-ac44ae4a-5c47ac12-50a3-5cfc6053", $args);				
 
 		if ( is_array( $response ) && ! is_wp_error( $response ) ) {
 		    $headers = $response['headers']; // array of http header lines
@@ -119,7 +136,7 @@ function mno_callback( $atts ) {
 						var _input = document.getElementById("masterNodeNumberInput").value;
 						var _coinVal = '.$coinValue.';
 						if(_input) {
-							var formula2 = _input*_coinVal*30*0.01;
+							var formula2 = (_input+100)*_coinVal*30*0.01;
 							document.getElementById("masterNodeOutput2").innerHTML = formula2.toFixed(1)
 						}
 						else {
@@ -131,8 +148,13 @@ function mno_callback( $atts ) {
 	else {
 		$output = $coinValue;
 	}
-	
-	return $output;
+
+	if($a['class'] == 'hidden') {
+		return '<span style="display:none">'.$output.'</div>';
+	}
+	else {
+		return '<span class="'.$a['class'].'">'.$output.'</div>';
+	}
 }
 
 add_shortcode( 'mno', 'mno_callback' );
