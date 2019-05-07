@@ -174,7 +174,7 @@ function mno_callback( $atts ) {
 	}
 
 	if($a['class'] == 'hidden') {
-		return '<span style="display:none"></span>';
+		return '<span style="display:none">'.$output.'</span>';
 	}
 	else {
 		return '<span class="'.$a['class'].'">'.$output.'</span>';
