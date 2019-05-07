@@ -91,7 +91,7 @@ function mno_callback( $atts ) {
 	$a = shortcode_atts( array(
 		"coin_ticker" => "",
 		"get" => "",
-		"formula" => 1,
+		"formula" => 0,
 		"class" => ""
 	), $atts );
 	
@@ -109,7 +109,7 @@ function mno_callback( $atts ) {
 	    	$coins = json_decode($body, ARRAY_A);
 	    	foreach ($coins as $i => $coin) {
 	    		if( @$coin['coin_ticker'] == @$a['coin_ticker'] ) {
-	    			$coinValue = @$coin[$a['get']];
+	    			$coinValue = @$coin[$a['get']];	    			
 	    			$selectedCoin = $coin;
 	    		}		    		
 	    	}		  
@@ -170,14 +170,14 @@ function mno_callback( $atts ) {
 				</script>';
 	}
 	else {
-		$output = $coinValue;
+		$output = round($coinValue, 1);
 	}
 
 	if($a['class'] == 'hidden') {
-		return '<span style="display:none">'.$output.'</div>';
+		return '<span style="display:none"></span>';
 	}
 	else {
-		return '<span class="'.$a['class'].'">'.$output.'</div>';
+		return '<span class="'.$a['class'].'">'.$output.'</span>';
 	}
 }
 
