@@ -37,6 +37,55 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'PLUGIN_NAME_VERSION', '1.0.0' );
 
+
+/**
+* Setting up a cron to get data
+**/
+// function masternode_custom_cron_schedule( $schedules ) {
+//     $schedules['every_minute'] = array(
+//         'interval' => 1 * MINUTE_IN_SECONDS, // Every 60 seconds
+//         'display'  => __( 'Every 5 minutes' ),
+//     );
+//     return $schedules; 
+// }
+// add_filter( 'cron_schedules', 'masternode_custom_cron_schedule' );
+
+// if ( ! wp_next_scheduled( 'get_coin_data' ) ) {
+//   wp_schedule_event( time(), 'every_minute', 'get_coin_data' );
+// }
+// add_action( 'get_coin_data', 'save_coin_data' );
+
+/**
+* Whenever page will redirect then saving the response in option table
+**/
+add_action( 'template_redirect', 'save_coin_data' );
+
+function save_coin_data() {
+	$args = array(
+		'timeout'     => 15,
+		'redirection' => 15,
+		'httpversion' => '1.0',
+		'blocking'    => true,
+		'headers'     => array(),
+		'cookies'     => array(),
+		'body'        => null,
+		'compress'    => false,
+		'decompress'  => true,
+		'sslverify'   => true,
+		'stream'      => false,
+		'filename'    => null
+	); 
+	// Response 
+	$response = wp_remote_get("https://masternodes.online/mno_api/?apiseed=MNOAPI-0063-ac44ae4a-5c47ac12-50a3-5cfc6053", $args);
+
+	if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+	    $headers = $response['headers']; // array of http header lines
+	    $body    = $response['body']; // use the content
+	    update_option( '__masternode_coin_data', $body );
+	}
+}
+
+
 function mno_callback( $atts ) {
 	// Get shortcodes
 	$a = shortcode_atts( array(
@@ -54,45 +103,20 @@ function mno_callback( $atts ) {
 		$output = "get parameter is empty";
 	}
 
-	if( !empty($a['coin_ticker']) ) {
-
-		$args = array(
-			'timeout'     => 15,
-			'redirection' => 15,
-			'httpversion' => '1.0',
-			'blocking'    => true,
-			'headers'     => array(),
-			'cookies'     => array(),
-			'body'        => null,
-			'compress'    => false,
-			'decompress'  => true,
-			'sslverify'   => true,
-			'stream'      => false,
-			'filename'    => null
-		); 
-
-		// Response 
-		$response = wp_remote_get("https://masternodes.online/mno_api/?apiseed=MNOAPI-0063-ac44ae4a-5c47ac12-50a3-5cfc6053", $args);				
-
-		if ( is_array( $response ) && ! is_wp_error( $response ) ) {
-		    $headers = $response['headers']; // array of http header lines
-		    $body    = $response['body']; // use the content
-		    if($body) {
-		    	$coins = json_decode($body, ARRAY_A);
-		    	foreach ($coins as $i => $coin) {
-		    		if( @$coin['coin_ticker'] == @$a['coin_ticker'] ) {
-		    			$coinValue = @$coin[$a['get']];
-		    			$selectedCoin = $coin;
-		    		}		    		
-		    	}		  
-		    }
-		}
-		else {
-			$output = "Some error occured while calling the api";
-			// echo '<pre>';
-			// print_r($response);
-			// echo '</pre>';			
-		}
+	if( !empty($a['coin_ticker']) ) {		
+		$body = get_option('__masternode_coin_data', false);
+		if($body) {
+	    	$coins = json_decode($body, ARRAY_A);
+	    	foreach ($coins as $i => $coin) {
+	    		if( @$coin['coin_ticker'] == @$a['coin_ticker'] ) {
+	    			$coinValue = @$coin[$a['get']];
+	    			$selectedCoin = $coin;
+	    		}		    		
+	    	}		  
+	    }
+	    else {
+	    	$output = "Coin data is empty";
+	    }
 	}
 	else {
 		$output = "Coin name is required";
