@@ -92,7 +92,8 @@ function mno_callback( $atts ) {
 		"coin_ticker" => "",
 		"get" => "",
 		"formula" => 0,
-		"class" => ""
+		"class" => "",
+		"do_round" => 1
 	), $atts );
 	
 	$output = "";
@@ -101,7 +102,7 @@ function mno_callback( $atts ) {
 
 	if( empty($a['get']) ) {
 		$output = "get parameter is empty";
-	}
+	}	
 
 	if( !empty($a['coin_ticker']) ) {		
 		$body = get_option('__masternode_coin_data', false);
@@ -124,43 +125,101 @@ function mno_callback( $atts ) {
 
 	if( $a['formula'] == 1 ) {
 		$output = ($coinValue*30)-9.99;
-		$output = round($output, 1);
+		
+		if($a['do_round'] == 0 ) {
+			$output = $output;
+		}
+		else {
+			$output = round($output, 1);
+		}
 	}	
 	else if( $a['formula'] == 2 ) {
 		$output = $coinValue*7;
-		$output = round($output, 1);		
+		
+		if($a['do_round'] == 0 ) {
+			$output = $output;
+		}
+		else {
+			$output = round($output, 1);
+		}
+
 	}
 	else if( $a['formula'] == 3 ) {
 		$output = $coinValue*30;
-		$output = round($output, 1);		
+		
+		if($a['do_round'] == 0 ) {
+			$output = $output;
+		}
+		else {
+			$output = round($output, 1);
+		}
 	}
 	else if( $a['formula'] == 4 ) {
 		$output = $coinValue*365;
-		$output = round($output, 1);		
+		
+		if($a['do_round'] == 0 ) {
+			$output = $output;
+		}
+		else {
+			$output = round($output, 1);
+		}
 	}
-	else if( $a['formula'] == 5 ) {
-		// echo '<pre>';
-		// print_r($output);
-		// echo '</pre>';
+	else if( $a['formula'] == 5 ) {		
 		$output = $selectedCoin['daily_income_usd']*365*100/(($selectedCoin['price_usd']*$selectedCoin['required_coins_for_masternode'])+(9.99*12));
-		$output = round($output, 1);		
+		
+		if($a['do_round'] == 0 ) {
+			$output = $output;
+		}
+		else {
+			$output = round($output, 1);
+		}
 	}
 	else if( $a['formula'] == 6 ) {
 		$output = $selectedCoin['daily_income_usd']*365*100/(($selectedCoin['price_usd']*$selectedCoin['required_coins_for_masternode'])+(29.99*12));
-		$output = round($output, 1);		
+		
+		if($a['do_round'] == 0 ) {
+			$output = $output;
+		}
+		else {
+			$output = round($output, 1);
+		}
 	}
 	else if( $a['formula'] == 7 ) {
 		$output = ($coinValue*30)-29.99;
-		$output = round($output, 1);
+		
+		if($a['do_round'] == 0 ) {
+			$output = $output;
+		}
+		else {
+			$output = round($output, 1);
+		}
 	}	
 	else if( $a['formula'] == 8 ) {
-		$output = round($coinValue, 1);
-		$output .= '<script>
+
+		if($a['do_round'] == 0 ) {
+			$output = $coinValue;
+			$output .= '<script>
+					var _coinVal = '.$output.';
 					function doCalculations() {
 						var _input = document.getElementById("masterNodeNumberInput").value;
-						var _coinVal = '.$coinValue.';
 						if(_input) {
-							var formula2 = (_input+100)*_coinVal*30*0.01;
+							var formula2 = (+_input + +100)*_coinVal*0.3;
+							document.getElementById("masterNodeOutput2").innerHTML = formula2.toFixed(4)
+						}
+						else {
+							document.getElementById("masterNodeOutput2").innerHTML = "";
+						}
+					}
+				</script>';
+		}
+		else {
+			$output = round($coinValue, 1);
+			$output .= '<script>
+					var _coinVal = '.$output.';
+					function doCalculations() {
+						var _input = document.getElementById("masterNodeNumberInput").value;
+						if(_input) {
+							var formula2 = (+_input + +100)*_coinVal*0.3;
 							document.getElementById("masterNodeOutput2").innerHTML = formula2.toFixed(1)
 						}
 						else {
@@ -168,9 +227,15 @@ function mno_callback( $atts ) {
 						}
 					}
 				</script>';
+		}		
 	}
 	else {
-		$output = round($coinValue, 1);
+		if($a['do_round'] == 0 ) {
+			$output = $coinValue;
+		}
+		else {
+			$output = round($coinValue, 1);
+		}
 	}
 
 	if($a['class'] == 'hidden') {
