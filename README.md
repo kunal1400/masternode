@@ -13,13 +13,13 @@ Plugin for Ondrej
 
 # shortcodes
 1) [mno coin_ticker="PIVX" get="daily_income_usd" formula=1]
-2) [mno coin_ticker="PIVX" get="daily_income_usd" formula=2]
-3) [mno coin_ticker="PIVX" get="daily_income_usd" formula=3]
-4) [mno coin_ticker="PIVX" get="daily_income_usd" formula=4]
-5) [mno coin_ticker="PIVX" get="daily_income_usd" formula=5]
-6) [mno coin_ticker="PIVX" get="daily_income_usd" formula=6]
-7) [mno coin_ticker="PIVX" get="daily_income_usd" formula=7]
-8) [mno coin_ticker="PIVX" get="daily_income_usd" formula=8]
+2) [mno coin_ticker="PIVX" get="daily_income_usd" formula=2 class="123" do_round=0]
+3) [mno coin_ticker="PIVX" get="daily_income_usd" formula=3 class="123" do_round=0]
+4) [mno coin_ticker="PIVX" get="daily_income_usd" formula=4 class="123" do_round=0]
+5) [mno coin_ticker="PIVX" get="daily_income_usd" formula=5 class="123" do_round=0]
+6) [mno coin_ticker="PIVX" get="daily_income_usd" formula=6 class="123" do_round=0]
+7) [mno coin_ticker="PIVX" get="daily_income_usd" formula=7 class="123" do_round=0]
+8) [mno coin_ticker="PIVX" get="daily_income_usd" formula=8 class="123" do_round=0]
 
 # shorcodes for formula8
 1) [formula8_input class="123"]
